@@ -1,0 +1,360 @@
+
+:root {
+    --bg-color: #0b1120;
+    --card-bg: #111827;
+    --input-bg: #1f2937;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --primary-blue: #3b82f6;
+    --primary-blue-hover: #2563eb;
+    --border-color: #374151;
+
+    --color-protein: #3b82f6;
+    --color-carbs: #a855f7;
+    --color-fats: #22c55e;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.logo-area {
+    text-align: center;
+}
+
+.logo-text {
+    color: var(--primary-blue);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.user-icon {
+    font-size: 1.5rem;
+    background: var(--input-bg);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.title-icon {
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.gender-toggle {
+    display: flex;
+    gap: 10px;
+}
+
+.gender-btn {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.gender-btn .icon {
+    font-size: 1.1rem;
+}
+
+.gender-btn.male.active {
+    background-color: #1e3a8a;
+    border-color: #93c5fd;
+    color: white;
+}
+
+.gender-btn.female.active {
+    background-color: #1e3a8a;
+    border-color: #93c5fd;
+    color: white;
+}
+
+.input-with-unit {
+    position: relative;
+}
+
+input[type="number"],
+select {
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.row-input .input-with-unit {
+    display: flex;
+    align-items: center;
+}
+
+.row-input label {
+    margin-bottom: 0;
+    margin-left: 15px;
+    white-space: nowrap;
+}
+
+.input-with-unit input {
+    flex: 1;
+}
+
+.unit {
+    position: absolute;
+    left: 15px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: left 15px top 50%;
+    padding-left: 40px;
+}
+
+.calculate-btn {
+    width: 100%;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.calculate-btn:hover {
+    background-color: var(--primary-blue-hover);
+}
+
+.result-highlight {
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+}
+
+.result-label {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.calories-value-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.fire-icon {
+    font-size: 2rem;
+    color: #f97316;
+}
+
+.calories-number {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+.unit-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.deficit-note {
+    background: rgba(31, 41, 55, 0.5);
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.macros-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.chart-container {
+    width: 150px;
+    height: 150px;
+    position: relative;
+}
+
+.macros-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.macro-item {
+    display: grid;
+    grid-template-columns: 20px 100px 70px 1fr;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.macro-item .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.macro-item.protein .dot {
+    background-color: var(--color-protein);
+}
+
+.macro-item.carbs .dot {
+    background-color: var(--color-carbs);
+}
+
+.macro-item.fats .dot {
+    background-color: var(--color-fats);
+}
+
+.macro-item .label {
+    color: var(--text-primary);
+}
+
+.macro-item .value {
+    font-weight: bold;
+    color: var(--text-primary);
+    text-align: left;
+    padding-left: 10px;
+}
+
+.macro-item .kcals {
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+.note-box {
+    background-color: rgba(31, 41, 55, 0.4);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.info-icon {
+    font-size: 1.1rem;
+    margin-top: 2px;
+}
+
+.site-footer {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    padding: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .calculator-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .macros-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .macro-item {
+        grid-template-columns: 20px 1fr 1fr 1fr;
+    }
+}
+
