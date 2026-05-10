@@ -1,110 +1,111 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('calorie-form');
-    const resultsContent = document.getElementById('results-content');
-    const resultCalories = document.getElementById('result-calories');
-    const proteinG = document.getElementById('protein-g');
-    const carbsG = document.getElementById('carbs-g');
-    const fatsG = document.getElementById('fats-g');
-    
-    const genderBtns = document.querySelectorAll('.gender-btn');
-    let selectedGender = 'male';
+let weight = 0, height = 0, age = 0, activityLevel = 0, lossRate = 0, targetCalories = 0, BMR = 0, genderValue = 0;
+let myMacrosChart = null;
+function gender(btn) {
+    const type = btn.getAttribute('data-gender');
+    genderValue = (type === 'male') ? 0 : 1;
+    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
-    genderBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            genderBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            selectedGender = this.dataset.gender;
-        });
-    });
+function userInput() {
+    // حذفنا let لنعدل المتغيرات العامة فوق
+    weight = parseFloat(document.getElementById('weight').value);
+    height = parseFloat(document.getElementById('height').value);
+    age = parseFloat(document.getElementById('age').value);
+    activityLevel = parseFloat(document.getElementById('activity-level').value);
+    lossRate = parseFloat(document.getElementById('loss-rate').value);
+}
 
+function BMRcal() {
+    // تصحيح المقارنة === وحذف let
+    if (genderValue === 0) {
+        BMR = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+    } else {
+        BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        
+    }
+    return BMR;
+}
+
+function Calories() {
+    // استخدام BMR المحسوبة
+    targetCalories = (BMR * activityLevel) - lossRate;
+    return targetCalories;
+}
+
+function Macronutrients() {
+    let protein = Math.round((targetCalories * 0.30) / 4);
+    let carbs = Math.round((targetCalories * 0.40) / 4);
+    let fats = Math.round((targetCalories * 0.30) / 9);
+    let totalCals = Math.round(targetCalories);
+
+    // 1. أنميشن الأرقام
+    const animateNumber = (elementId, targetValue) => {
+        let startValue = 0;
+        let duration = 1200; 
+        let stepTime = 30; 
+        let increment = targetValue / (duration / stepTime);
+        
+        let timer = setInterval(() => {
+            startValue += increment;
+            if (startValue >= targetValue) {
+                document.getElementById(elementId).innerText = Math.round(targetValue);
+                clearInterval(timer);
+            } else {
+                document.getElementById(elementId).innerText = Math.round(startValue);
+            }
+        }, stepTime);
+    };
+
+    animateNumber('protein-g', protein);
+    animateNumber('carbs-g', carbs);
+    animateNumber('fats-g', fats);
+    animateNumber('result-calories', totalCals);
+
+    document.getElementById('results-content').style.opacity = "1";
+    document.getElementById('results-content').style.pointerEvents = "auto";
+
+    // 2. أنميشن الدائرة وألوان متطابقة مع الصورة
     const ctx = document.getElementById('macrosChart').getContext('2d');
-    let macrosChart = new Chart(ctx, {
+    if (myMacrosChart) { myMacrosChart.destroy(); }
+
+    myMacrosChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['انتظار البيانات'],
+            labels: ['البروتين', 'الكارب', 'الدهون'],
             datasets: [{
-                data: [100],
-                backgroundColor: ['#1f2937'],
-                borderWidth: 0
+                data: [protein, carbs, fats],
+                backgroundColor: [
+                    '#4285F4', // الأزرق للبروتين
+                    '#A142F4', // البنفسجي للكارب
+                    '#34A853'  // الأخضر للدهون
+                ],
+                borderWidth: 0, // إلغاء الحدود لتبدو ناعمة مثل الصورة
+                hoverOffset: 10
             }]
         },
         options: {
-            cutout: '75%',
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            cutout: '80%', // تجويف أكبر ليعطي شكل الحلقة النحيفة
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 1500,
+                easing: 'easeOutQuart' // حركة ناعمة جداً في النهاية
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+            }
         }
     });
+}
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        
-        const weight = parseFloat(document.getElementById('weight').value);
-        const height = parseFloat(document.getElementById('height').value);
-        const age = parseFloat(document.getElementById('age').value);
-        const activityValue = parseFloat(document.getElementById('activity-level').value);
-        const lossDeficit = parseFloat(document.getElementById('loss-rate').value); // العجز المختار
-
-        if (isNaN(activityValue)) {
-            alert("يرجى اختيار مستوى النشاط");
-            return;
-        }
-
-       
-        let bmr;
-        if (selectedGender === 'male') {
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-        } else {
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-        }
-
-        
-        const tdee = bmr * activityValue;
-
-        
-        let targetCalories = Math.round(tdee - lossDeficit);
-
-        
-        if (targetCalories < 1200) targetCalories = 1200;
-
-        
-        const pG = Math.round((targetCalories * 0.30) / 4);
-        const cG = Math.round((targetCalories * 0.40) / 4);
-        const fG = Math.round((targetCalories * 0.30) / 9);
-
-       
-        resultsContent.style.opacity = "1";
-        animateNumber(resultCalories, 0, targetCalories, 1000);
-        proteinG.innerText = pG;
-        carbsG.innerText = cG;
-        fatsG.innerText = fG;
-
-        updateMacrosChart(pG, cG, fG);
-
-            window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-    });
-    
-    });
-
-    function updateMacrosChart(p, c, f) {
-        macrosChart.data.labels = ['بروتين', 'كاربوهيدرات', 'دهون'];
-        macrosChart.data.datasets[0].data = [p, c, f];
-        macrosChart.data.datasets[0].backgroundColor = ['#3b82f6', '#a855f7', '#22c55e'];
-        macrosChart.options.plugins.tooltip.enabled = true;
-        macrosChart.update();
-    }
-
-    function animateNumber(obj, start, end, duration) {
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            obj.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
-            if (progress < 1) window.requestAnimationFrame(step);
-        };
-        window.requestAnimationFrame(step);
-    }
-});
+// دالة واحدة تجمعهم كلهم ليتم استدعاؤها عند الضغط على الزر
+function calculateAll() {
+    userInput();
+    BMRcal();
+    Calories();
+    Macronutrients();
+}
